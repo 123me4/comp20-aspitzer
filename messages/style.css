@@ -1,1 +1,4 @@
-/* Your CSS here... */
+mark {
+	background-color: lightgreen;
+	color: black;
+}
