@@ -7,7 +7,6 @@ var markers = JSON.parse(jsonData);
 var line1;
 var line2;
 
-
 function initMap() {
 	var array1 = [new google.maps.LatLng(markers[11].lat, markers[11].lon), new google.maps.LatLng(markers[10].lat, markers[10].lon), new google.maps.LatLng(markers[2].lat, markers[2].lon), new google.maps.LatLng(markers[3].lat, markers[3].lon), new google.maps.LatLng(markers[20].lat, markers[20].lon), new google.maps.LatLng(markers[12].lat, markers[12].lon), new google.maps.LatLng(markers[13].lat, markers[13].lon), new google.maps.LatLng(markers[6].lat, markers[6].lon), new google.maps.LatLng(markers[14].lat, markers[14].lon), new google.maps.LatLng(markers[0].lat, markers[0].lon), new google.maps.LatLng(markers[7].lat, markers[7].lon), new google.maps.LatLng(markers[1].lat, markers[1].lon), new google.maps.LatLng(markers[4].lat, markers[4].lon), new google.maps.LatLng(markers[8].lat, markers[8].lon), new google.maps.LatLng(markers[15].lat, markers[15].lon), new google.maps.LatLng(markers[16].lat, markers[16].lon), new google.maps.LatLng(markers[21].lat, markers[21].lon)];
 	var array2 = [new google.maps.LatLng(markers[4].lat, markers[4].lon), new google.maps.LatLng(markers[5].lat, markers[5].lon), new google.maps.LatLng(markers[19].lat, markers[19].lon), new google.maps.LatLng(markers[9].lat, markers[9].lon), new google.maps.LatLng(markers[17].lat, markers[17].lon)];
@@ -24,9 +23,15 @@ function initMap() {
     	mark[i] = new google.maps.Marker({
     		position: new google.maps.LatLng(markers[i].lat, markers[i].lon), 
     		map: map, 
-    		title: markers[i].name,
+    		title: markers[i].id,
+    		label: markers[i].name,
     		icon: iconBase + 'library_maps.png'
     	});
+    	mark[i].addListener('click', function() {
+    		infoWindow.setPosition(this.getPosition());
+    		infoWindow.setContent(this.getLabel() + " " + trains(this.getTitle() + "!"));
+			infoWindow.open(map);
+  		});
     }
     
     line1 = new google.maps.Polyline({
@@ -78,12 +83,26 @@ function initMap() {
     			k = x;
     		}    	
     	}
-        infoWindow.setContent('Its me! <br />The closest station is ' + j + "<br />at " + k.toFixed(2) + " miles away.");
+        infoWindow.setContent('Its me! <br />The closest station is ' + h + '<br />at ' + k.toFixed(2) + ' miles away.');
 		infoWindow.open(map);
 		line3.setPath([me.getPosition(), mark[j].getPosition()]);
 	});
 }
 
+function trains(id){
+	var url = "https://defense-in-derpth.herokuapp.com/redline/schedule.json?stop_id=" + id;
+	var info = 'hi';
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	 		var myObj = JSON.parse(this.responseText);
+    		info = myObj + "";
+    		return info;
+    	}
+	};
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+}
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 	infoWindow.setPosition(pos);
 	infoWindow.setContent(browserHasGeolocation ?

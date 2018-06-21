@@ -1,13 +1,10 @@
 # 123me4 MBTA lab
 ### Completeness
-Done late.  Made the map, centered it, added markers, changed icons (i had wanted to use the bus station icon, but found the library icon easier to use), added polylines.
+I added my location, the polyline when i click, and an infowindow to pop up when I click a station icon, but by the time I started trying to format the arrival times, the API gave me this: {"data":[],"jsonapi":{"version":"1.0"}}
+I'll continue to work on this after the deadline but this is literally the best I can do right now.
 
 ### Help
-I discussed this lab briefly with my dad, mostly to troubleshoot why the map 
-had 0 height.  As it turns out, putting the HTML <style></style> tags in the css
-document does not work.  Who knew?  :)
-
-Other than that, it was just me and google.  StackExchange was a third wheel.
+This lab was probably more StackExchange and W3C look ups than all the others.  Thats where all my help came from.
 
 ### Time
-This assignment took ~5.5 hours total to complete (~3.5 of them were after the deadline).
+This assignment took ~3 hours before the API crapped on me, and another hour was spent trying to find out why everything was undefined.  Half an hour was then spent seeing if I could work informationless, and now I chose to stop and hope the API is working tomorrow.
