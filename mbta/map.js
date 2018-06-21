@@ -28,10 +28,30 @@ function initMap() {
     		icon: iconBase + 'library_maps.png'
     	});
     	mark[i].addListener('click', function() {
+    		data = function(id, name){
+				var info = 'hi';
+				var url = "https://defense-in-derpth.herokuapp.com/redline/schedule.json?stop_id=" + id;
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+	    			if (this.readyState == 4 && this.status == 200) {
+	 					var myObj = JSON.parse(this.responseText);
+    					info = name;
+    					for (i in myObj.data) {
+    							info = info + '<br />' +
+    							myObj.data[i].attributes.arrival_time.substring(11, 19) + 
+    							'&nbsp&nbsp&nbsp&nbsp&nbsp' + 
+    							((myObj.data[i].attributes.direction_id)?"Southbound":"Northbound")
+    						}
+    					infoWindow.setContent(info);
+    				}
+				};
+				xmlhttp.open("GET", url, true);
+				xmlhttp.send();
+			}
+			data(this.getTitle(), this.getLabel());
     		infoWindow.setPosition(this.getPosition());
-    		infoWindow.setContent(this.getLabel() + " " + trains(this.getTitle() + "!"));
 			infoWindow.open(map);
-  		});
+    	});
     }
     
     line1 = new google.maps.Polyline({
@@ -56,7 +76,7 @@ function initMap() {
               lng: position.coords.longitude
             };
             me.setPosition(pos);
-            infoWindow.setPosition(pos);
+            //infoWindow.setPosition(pos);
             
         }, function() {
         	handleLocationError(true, infoWindow, map.getCenter());
@@ -96,7 +116,7 @@ function trains(id){
 	xmlhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
 	 		var myObj = JSON.parse(this.responseText);
-    		info = myObj + "";
+    		info = myObj.data[0].attributes.schedule_relationship + '!';
     		return info;
     	}
 	};
