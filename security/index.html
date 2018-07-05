@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Report</title>
+</head>
+<body>
+	<h1>Security Assessment</h1>
+
+	<p>By Alex Spitzer</p>
+
+	<h2>Introduction</h2>
+
+	<p>This assignment was to find as many security and privacy problems in the jordan-marsh heroku app (aka Not Foursquare) as possible.<br />The app allows users to log in with a username and location (in the form of longitude and latitude).  They can see when and where others have logged in as well on the main page.</p>
+
+	<h2>Methodology</h2>
+
+	<p>At first I did some black box testing, by playing around with query strings on the login and main page.  After that I reviewed the sourcecode and attempted some white box testing, using more query strings and curl.</p>
+
+	<h2>Abstract of Findings</h2>
+
+	<p>Not Foursquare allows users to provide unexpected input, which allows for the threat of malicious hacking.</p>
+
+	<h2>Issues Found</h2>
+
+	<p><ul><h3><li>Cross-site scripting</li></h3><ul><li>Location - GET pages</li><li>Severity - high.  </li><li>Description - This issue allows users to insert scripts into the site when the site loads their login.  A user could force a pop up, insert any image they wish, or even redirect the entire page to another site. </li><li>Resolution - Sanitize the "login" variable.  Whitelist characters like '<', '>', ';', '}', etc. </li></ul> <h3><li>NoSQL Injection</li></h3><ul><li>Location - GET pages</li><li>Severity - high.  </li><li>Description - This issue allows users to find and receive information they shouldn't have.  Adding the query string "?login[$gt]=" to /checkins.json provides the entire JSON of the database, with all the data connected to every login. </li><li>Resolution - don't let the query be completely user input.</li></ul></ul></p>
+
+	<h2>Conclusion</h2>
+
+	<p>The app as it is currently coded risks hackers harming both users in their own browser, and data in the server.  It needs to be fixed to prevent as much damage as possible.</p>
+
+</body>
+</html>
